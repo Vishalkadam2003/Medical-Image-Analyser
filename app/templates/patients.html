@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>View Patient Records</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: url('/static/new_background.jpg') no-repeat center center/cover;
+      min-height: 100vh;
+      font-family: 'Poppins', sans-serif;
+      position: relative;
+      color: #fff;
+    }
+    body::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 0;
+    }
+    .container {
+      position: relative;
+      z-index: 1;
+    }
+    .record-card {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+      backdrop-filter: blur(8px);
+      transition: transform 0.3s ease;
+    }
+    .record-card:hover {
+      transform: translateY(-5px);
+    }
+    .search-bar {
+      max-width: 400px;
+      margin: 20px auto;
+    }
+    .btn-primary, .btn-success {
+      border-radius: 25px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container py-5">
+  <h2 class="text-center mb-4">Patient Records</h2>
+
+  <div class="search-bar text-center mb-4">
+    <input type="text" id="searchInput" onkeyup="searchRecords()" class="form-control" placeholder="Search by patient name...">
+  </div>
+
+  <div class="text-center mb-4">
+    <a href="/export_csv" class="btn btn-success">Export All Records (CSV)</a>
+  </div>
+
+  <div class="row g-4" id="recordsContainer">
+    {% for patient in xray_patients %}
+    <div class="col-md-4">
+      <div class="record-card">
+        <h5 class="fw-bold">Name: {{ patient.name }}</h5>
+        <p>Age: {{ patient.age }}</p>
+        <p>Gender: {{ patient.gender }}</p>
+        <p>Contact: {{ patient.contact }}</p>
+        <a href="/patient/{{ patient.id }}" class="btn btn-primary w-100 mt-2">View X-ray Details</a>
+      </div>
+    </div>
+    {% endfor %}
+    {% for patient in mri_patients %}
+    <div class="col-md-4">
+      <div class="record-card">
+        <h5 class="fw-bold">Name: {{ patient.name }}</h5>
+        <p>Age: {{ patient.age }}</p>
+        <p>Gender: {{ patient.gender }}</p>
+        <p>Contact: {{ patient.contact }}</p>
+        <a href="/mri_patient/{{ patient.id }}" class="btn btn-primary w-100 mt-2">View MRI Details</a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<script>
+function searchRecords() {
+  let input = document.getElementById("searchInput").value.toUpperCase();
+  let cards = document.querySelectorAll("#recordsContainer .record-card");
+  cards.forEach(card => {
+    let name = card.querySelector("h5").innerText.toUpperCase();
+    card.parentElement.style.display = name.includes(input) ? "" : "none";
+  });
+}
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

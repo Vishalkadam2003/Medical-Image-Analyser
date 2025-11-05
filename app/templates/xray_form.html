@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Upload Chest X-ray for Analysis</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: url('/static/new_background.jpg') no-repeat center center/cover;
+      min-height: 100vh;
+      font-family: 'Poppins', sans-serif;
+      position: relative;
+      color: #fff;
+    }
+    body::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 0;
+    }
+    .form-container {
+      position: relative;
+      z-index: 1;
+      max-width: 600px;
+      margin: 60px auto;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+      backdrop-filter: blur(8px);
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #fff;
+      font-weight: 600;
+    }
+    label {
+      color: #fff;
+      font-weight: 500;
+    }
+    .form-control {
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      color: #fff;
+    }
+    .form-control::placeholder {
+      color: #ddd;
+    }
+    .btn-primary {
+      width: 100%;
+      padding: 10px;
+      font-size: 1.1rem;
+      border-radius: 25px;
+      background-color: #0d6efd;
+      border: none;
+      transition: 0.3s ease;
+    }
+    .btn-primary:hover {
+      background-color: #084298;
+    }
+    .preview-img {
+      display: block;
+      max-width: 100%;
+      max-height: 250px;
+      margin: 15px auto;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+  </style>
+</head>
+<body>
+
+<div class="form-container">
+  <h2>Upload Chest X-ray for Analysis</h2>
+  <form method="POST" enctype="multipart/form-data">
+    <div class="mb-3">
+      <label for="name" class="form-label">Patient Name</label>
+      <input type="text" class="form-control" id="name" name="name" placeholder="Enter patient's name" required>
+    </div>
+    <div class="mb-3">
+      <label for="age" class="form-label">Age</label>
+      <input type="number" class="form-control" id="age" name="age" placeholder="Enter age" required>
+    </div>
+    <div class="mb-3">
+      <label for="gender" class="form-label">Gender</label>
+      <select class="form-control" id="gender" name="gender" required>
+        <option value="">Select Gender</option>
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label for="contact" class="form-label">Contact Number</label>
+      <input type="text" class="form-control" id="contact" name="contact" placeholder="Enter contact number" required>
+    </div>
+    <div class="mb-3">
+      <label for="xray_image" class="form-label">Upload X-ray Image</label>
+      <input type="file" class="form-control" id="xray_image" name="xray_image" accept="image/*" required onchange="previewImage(event)">
+    </div>
+    <img id="preview" class="preview-img" style="display:none;" />
+    <div class="mb-3">
+      <label for="notes" class="form-label">Additional Notes (optional)</label>
+      <textarea class="form-control" id="notes" name="notes" rows="3" placeholder="Any additional information..."></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Analyze X-ray</button>
+  </form>
+</div>
+
+<script>
+  function previewImage(event) {
+    const reader = new FileReader();
+    reader.onload = function(){
+      const output = document.getElementById('preview');
+      output.src = reader.result;
+      output.style.display = 'block';
+    };
+    reader.readAsDataURL(event.target.files[0]);
+  }
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
